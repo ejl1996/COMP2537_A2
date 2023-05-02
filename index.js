@@ -292,6 +292,11 @@ app.get('/logoutuser', (req, res) => {
     //res.send(html);
 });
 
+app.get('/admin', async (req, res) => {
+    const result = await userCollection.find().project({ username: 1, _id: 1 })
+    res.render("admin.ejs", { users: result });
+});
+
 app.use(express.static(__dirname + "/public"));
 
 app.get("*", (req, res) => {
