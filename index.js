@@ -50,6 +50,42 @@ app.use(session({
 }
 ));
 
+function isValidSession(req) {
+    if (req.sesion.authenticated) {
+        return true;
+    }
+    return false;
+
+    function sessionValidation(req, res, next) {
+        if (isValidSession(req)) {
+            next();
+        }
+        else {
+            res.redirect('/login');
+        }
+    }
+}
+
+function isAdmin(req) {
+    //return req.session.user_type = "admin";
+    if (req.session.user_type == 'admin') {
+        return true;
+    }
+    return false;
+}
+
+function adminAuthorization(req, res, next) {
+    if (!isAdmin(req)) {
+        res.status(403);
+        //403 forbidden
+        res.render("errorMessage.ejs", { error: "Not Authorized" });
+        return;
+    }
+    else {
+        next();
+    }
+}
+
 app.get('/', (req, res) => {
     res.render("home.ejs")
 })
@@ -201,11 +237,6 @@ app.get('/login', (req, res) => {
             x: "<br> Invalid password."
         })
     }
-});
-
-app.use('/loggedin', sesionValidation);
-app.get('loggedin', (req, res) => {
-    res.render("loggedin.ejs")
 });
 
 app.post('/submitUser', async (req, res) => {
