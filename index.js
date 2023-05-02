@@ -338,7 +338,8 @@ app.get('/admin', sessionValidation, adminAuthorization, async (req, res) => {
 app.use(express.static(__dirname + "/public"));
 
 app.get("*", (req, res) => {
-    res.status(404).render("404.ejs")
+    res.status(404);
+    render("404.ejs");
 });
 
 app.listen(port, () => {
