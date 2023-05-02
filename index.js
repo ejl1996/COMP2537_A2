@@ -250,7 +250,7 @@ app.post('/loggingin', async (req, res) => {
 
     console.log(result);
     if (result.length != 1) {
-        res.send("User Not Found" + "<br>" + '<a href="/login">Try again</a>');
+        res.render("usernotfound.ejs");
         //console.log("user not found");
         //res.redirect("/login");
         return;
@@ -265,7 +265,7 @@ app.post('/loggingin', async (req, res) => {
         return;
     }
     else {
-        res.send("Incorrect Password" + "<br>" + '<a href="/login">Try again</a>');
+        res.render("incorrect.ejs");
         //console.log("incorrect password");
         //res.redirect("/login");
         return;
