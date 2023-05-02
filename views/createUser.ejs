@@ -1,8 +1,12 @@
-<%- include("templates/header") %>
-    create user
+<%- include('templates/header.ejs') %>
+    Create User
     <form action='/submitUser' method='post'>
         <input name='username' type='text' placeholder='username'>
+        <br>
+        <input name='email' type='text' placeholder='email'>
+        <br>
         <input name='password' type='password' placeholder='password'>
+        <br>
         <button>Submit</button>
     </form>
-    <%- include("templates/footer") %>
+    <%- include('templates/footer.ejs') %>
