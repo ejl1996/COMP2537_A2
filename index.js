@@ -84,12 +84,6 @@ app.get('/nosql-injection', async (req, res) => {
     res.render("username.ejs");
 });
 
-app.get('/about', (req, res) => {
-    var color = req.query.color;
-    var bg = req.query.bg;
-    res.send("<h1 style='background-color: " + bg + "; color:" + color + ";'>Patrick Guichon</h1>");
-});
-
 app.get('/logout', (req, res) => {
     if (req.session.authenticated) {
         req.session.destroy(err => {
