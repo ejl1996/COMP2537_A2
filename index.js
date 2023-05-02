@@ -203,6 +203,11 @@ app.get('/login', (req, res) => {
     }
 });
 
+app.use('/loggedin', sesionValidation);
+app.get('loggedin', (req, res) => {
+    res.render("loggedin.ejs")
+});
+
 app.post('/submitUser', async (req, res) => {
     console.log('Submit user')
     console.log('hello world')
