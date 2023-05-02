@@ -312,6 +312,7 @@ app.post('/loggingin', async (req, res) => {
     }
 });
 
+app.use('/loggedin', sessionValidation);
 app.get('/loggedin', (req, res) => {
     if (!req.session.authenticated) {
         res.redirect('/login');
