@@ -5,6 +5,11 @@ const express = require('express');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const bcrypt = require('bcrypt');
+//1. Import
+let ejs = require('ejs');
+//2. Set view engine to ejs 
+app.set('view engine', 'ejs')
+
 const saltRounds = 12;
 
 const port = process.env.PORT || 4000;
