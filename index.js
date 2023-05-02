@@ -112,7 +112,9 @@ app.post('/submitEmail', (req, res) => {
         res.redirect('/contact?missing=1');
     }
     else {
-        res.send("Thanks for subscribing with your email: " + email);
+        res.render("submit.ejs", {
+            x: req.body.email
+        })
     }
 });
 
@@ -293,8 +295,8 @@ app.get('/logoutuser', (req, res) => {
 app.use(express.static(__dirname + "/public"));
 
 app.get("*", (req, res) => {
-    res.status(404).send("Page not found - 404");
-})
+    res.status(404).render("404.ejs")
+});
 
 app.listen(port, () => {
     console.log("Node application listening on port " + port);
