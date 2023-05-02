@@ -148,7 +148,7 @@ app.get('/members', authenticatedOnly, (req, res) => {
     var authenticated = req.session.authenticated
     var html = `<h1>Hello ${nameOfUser}</h1>`
     var html1 = `<a href="/logoutuser" class="btn btn-primary">Sign out</a>`
-    var members = `<a href="/members"> Go to Members Area</a>
+    var members = `<form> <a href="/members"> Go to Members Area</a>
         </form >
         `
     if (!authenticated) {
@@ -156,17 +156,29 @@ app.get('/members', authenticatedOnly, (req, res) => {
         return
     }
     if (randomNum == 1) {
-        res.send(html + "<img src='/fluffy.gif' style='width:250px;'>" + "<br>" + html1 + "<br>" + members);
+        res.render("hello.ejs", {
+            x: nameOfUser,
+            y: "/fluffy.gif"
+        })
+        //res.send(html + "<img src='/fluffy.gif' style='width:250px;'>" + "<br>" + html1 + "<br>" + members);
     }
 
     else if (randomNum == 2) {
-        res.send(html + "<img src='/socks.gif' style='width:250px;'>" + "<br>" + html1 + "<br>" + members);
+        res.render("hello.ejs", {
+            x: nameOfUser,
+            y: "/socks.gif"
+        })
+        //res.send(html + "<img src='/socks.gif' style='width:250px;'>" + "<br>" + html1 + "<br>" + members);
     }
     else if (randomNum == 3) {
-        res.send(html + "<img src='/cat3.jpg' style='width:250px;'>" + "<br>" + html1 + "<br>" + members);
+        res.render("hello.ejs", {
+            x: nameOfUser,
+            y: "/cat3.jpg"
+        })
+        //res.send(html + "<img src='/cat3.jpg' style='width:250px;'>" + "<br>" + html1 + "<br>" + members);
     }
     else {
-        res.send("Invalid cat id: " + cat);
+        res.render("invalid.ejs")
     }
 });
 
@@ -265,7 +277,7 @@ app.post('/loggingin', async (req, res) => {
         return;
     }
     else {
-        res.render("incorrect.ejs");
+        res.render();
         //console.log("incorrect password");
         //res.redirect("/login");
         return;
