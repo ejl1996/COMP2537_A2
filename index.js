@@ -55,14 +55,14 @@ function isValidSession(req) {
         return true;
     }
     return false;
+}
 
-    function sessionValidation(req, res, next) {
-        if (isValidSession(req)) {
-            next();
-        }
-        else {
-            res.redirect('/login');
-        }
+function sessionValidation(req, res, next) {
+    if (isValidSession(req)) {
+        next();
+    }
+    else {
+        res.redirect('/login');
     }
 }
 
@@ -320,7 +320,7 @@ app.post('/loggingin', async (req, res) => {
     }
 });
 
-//app.use('/loggedin', sessionValidation);
+app.use('/loggedin', sessionValidation);
 app.get('/loggedin', (req, res) => {
     if (!req.session.authenticated) {
         res.redirect('/login');
@@ -337,11 +337,11 @@ app.get('/logoutuser', (req, res) => {
     //res.send(html);
 });
 
-app.use('/admin');
-app.get('/admin', sessionValidation, adminAuthorization, async (req, res) => {
-    const result = await userCollection.find().project({ username: 1, _id: 1 })
-    res.render("admin.ejs", { users: result });
-});
+//app.use('/admin');
+//app.get('/admin', sessionValidation, adminAuthorization, async (req, res) => {
+//const result = await userCollection.find().project({ username: 1, _id: 1 })
+//res.render("admin.ejs", { users: result });
+//});
 
 app.use(express.static(__dirname + "/public"));
 
