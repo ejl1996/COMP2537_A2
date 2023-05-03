@@ -227,6 +227,7 @@ app.get('/members', authenticatedOnly, (req, res) => {
     }
 });
 
+
 //app.get('/test', (req, res) => {
 //var x = 5;
 
@@ -340,6 +341,22 @@ app.get('/logoutuser', (req, res) => {
     //You are logged out.
     //`;
     //res.send(html);
+});
+
+app.post('/deleteTodoItem', async (req, res) => {
+    //1 - find the user in the database
+    const result = await usersModel.findOne({ username: req.session.loggedUsername })
+    //2 -delete the todo items from the todos array 
+    const newArr = result.todos.filter((todoItem)) => {
+        return todoItem.name != req.body.x
+    })
+//3 - update the user's todos array in the database
+const updateResult = await usersModel.updateOne(
+    { username: req.session.loggedUsername }, //selection object
+    { $set: { todos: newArr } } //update object
+)
+//4 - redirect to the protected route
+res.redirect('/protectedRoute');
 });
 
 //app.use('/admin');
