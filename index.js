@@ -193,7 +193,7 @@ app.get('/members', authenticatedOnly, (req, res) => {
         `
     if (!authenticated) {
         res.redirect('/');
-        return
+        //return
     }
     if (randomNum == 1) {
         res.render("hello.ejs", {
@@ -216,9 +216,6 @@ app.get('/members', authenticatedOnly, (req, res) => {
             y: "/cat3.jpg"
         })
         //res.send(html + "<img src='/cat3.jpg' style='width:250px;'>" + "<br>" + html1 + "<br>" + members);
-    }
-    else {
-        res.render("invalid.ejs")
     }
 });
 
