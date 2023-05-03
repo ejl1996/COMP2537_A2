@@ -87,7 +87,7 @@ function adminAuthorization(req, res, next) {
 }
 
 app.get('/', (req, res) => {
-    res.render("home.ejs")
+    res.render("login.ejs")
 })
 
 app.get('/cats', (req, res) => {
