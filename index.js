@@ -198,7 +198,10 @@ app.get('/members', authenticatedOnly, (req, res) => {
     if (randomNum == 1) {
         res.render("hello.ejs", {
             x: nameOfUser,
-            y: "/fluffy.gif"
+            a: "/fluffy.gif",
+            b: "/socks.gif",
+            c: "/cat3.jpg"
+
         })
         //res.send(html + "<img src='/fluffy.gif' style='width:250px;'>" + "<br>" + html1 + "<br>" + members);
     }
@@ -206,14 +209,18 @@ app.get('/members', authenticatedOnly, (req, res) => {
     else if (randomNum == 2) {
         res.render("hello.ejs", {
             x: nameOfUser,
-            y: "/socks.gif"
+            a: "/fluffy.gif",
+            b: "/socks.gif",
+            c: "/cat3.jpg"
         })
         //res.send(html + "<img src='/socks.gif' style='width:250px;'>" + "<br>" + html1 + "<br>" + members);
     }
     else if (randomNum == 3) {
         res.render("hello.ejs", {
             x: nameOfUser,
-            y: "/cat3.jpg"
+            a: "/fluffy.gif",
+            b: "/socks.gif",
+            c: "/cat3.jpg"
         })
         //res.send(html + "<img src='/cat3.jpg' style='width:250px;'>" + "<br>" + html1 + "<br>" + members);
     }
