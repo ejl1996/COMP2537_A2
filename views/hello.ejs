@@ -1,13 +1,15 @@
-<h1>Hello <%=x%>
-</h1>
+<%- include('templates/header.ejs') %>
+    <h1>Hello <%=x%>
+    </h1>
 
-<img src='<%=y%>' style='width:250px;'>
+    <img src='<%=y%>' style='width:250px;'>
 
-<br>
+    <br>
 
-<a href="/logoutuser" class="btn btn-primary">Sign out</a>
+    <a href="/logoutuser" class="btn btn-primary">Sign out</a>
 
-<br>
+    <br>
 
-<form> <a href="/members"> Go to Members Area</a>
-</form>
+    <form> <a href="/members"> Go to Members Area</a>
+    </form>
+    <%- include('templates/footer.ejs') %>
