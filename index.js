@@ -90,6 +90,10 @@ app.get('/', (req, res) => {
     res.render("home.ejs")
 })
 
+app.get('/cats', (req, res) => {
+    res.render("cats.ejs")
+});
+
 app.get('/nosql-injection', async (req, res) => {
     var username = req.query.user;
 
