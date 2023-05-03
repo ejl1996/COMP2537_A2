@@ -91,7 +91,11 @@ app.get('/', (req, res) => {
 })
 
 app.get('/cats', (req, res) => {
-    res.render("cats.ejs")
+    res.render("cats.ejs");
+});
+
+app.get('/cats', (req, res) => {
+    res.render("login.ejs");
 });
 
 app.get('/nosql-injection', async (req, res) => {
