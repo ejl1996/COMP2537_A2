@@ -94,7 +94,7 @@ app.get('/cats', (req, res) => {
     res.render("cats.ejs");
 });
 
-app.get('/cats', (req, res) => {
+app.get('/login', (req, res) => {
     res.render("login.ejs");
 });
 
@@ -320,7 +320,7 @@ app.post('/loggingin', async (req, res) => {
     }
 });
 
-app.use('/loggedin', sessionValidation);
+//app.use('/loggedin', sessionValidation);
 app.get('/loggedin', (req, res) => {
     if (!req.session.authenticated) {
         res.redirect('/login');
