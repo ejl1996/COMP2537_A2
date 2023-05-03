@@ -32,9 +32,10 @@ var { database } = include('databaseConnection');
 
 const userCollection = database.db(mongodb_database).collection('users');
 
-// initially was /session, now /test in mongoURL 
+//req.body need this 
 app.use(express.urlencoded({ extended: false }));
 
+// initially was /session, now /test in mongoURL
 var mongoStore = MongoStore.create({
     mongoUrl: `mongodb+srv://${mongodb_user}:${mongodb_password}@clustera1.squca6a.mongodb.net/test`,
     // mongoUrl: `mongodb+srv://${mongodb_user}:${mongodb_password}@${mongodb_host}/test`,
@@ -88,7 +89,7 @@ function adminAuthorization(req, res, next) {
 }
 
 app.get('/', (req, res) => {
-    res.render("login.ejs")
+    res.render("home.ejs")
 })
 
 app.get('/cats', (req, res) => {
@@ -291,7 +292,7 @@ app.post('/submitUser', async (req, res) => {
 app.post('/loggingin', async (req, res) => {
     var username = req.body.username;
     var password = req.body.password;
-
+    console.log(req.body)
     const schema = Joi.string().max(20).required();
     const validationResult = schema.validate(username);
     if (validationResult.error != null) {
@@ -345,7 +346,7 @@ app.get('/logoutuser', (req, res) => {
 
 app.post('/deleteTodoItem', async (req, res) => {
     //1 - find the user in the database
-    const result = await usersModel.findOne({ username: req.session.loggedUsername })
+    const result = await usersModel.find()
     //2 -delete the todo items from the todos array 
     const newArr = result.todos.filter((todoItem) =>
         todoItem.name != req.body.x
@@ -364,6 +365,10 @@ app.post('/deleteTodoItem', async (req, res) => {
 //const result = await userCollection.find().project({ username: 1, _id: 1 })
 //res.render("admin.ejs", { users: result });
 //});
+
+app.get('/admin', (req, res) => {
+    res.render("admin.ejs")
+});
 
 app.use(express.static(__dirname + "/public"));
 
