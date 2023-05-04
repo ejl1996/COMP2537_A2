@@ -367,15 +367,14 @@ app.post('/deleteTodoItem', async (req, res) => {
 //});
 
 app.get('/admin', (req, res) => {
-    const result = await usersModel.find()
+    //const result = await usersModel.find()
     res.render("admin.ejs")
 });
 
 app.use(express.static(__dirname + "/public"));
 
 app.get("*", (req, res) => {
-    res.status(404);
-    render("404.ejs");
+    res.status(404).render("404.ejs");
 });
 
 app.listen(port, () => {
