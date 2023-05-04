@@ -367,6 +367,7 @@ app.post('/deleteTodoItem', async (req, res) => {
 //});
 
 app.get('/admin', (req, res) => {
+    const result = await usersModel.find()
     res.render("admin.ejs")
 });
 
