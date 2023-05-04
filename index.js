@@ -348,9 +348,9 @@ app.post('/addNewTodoItem', async (req, res) => {
     //1 - find the user in the database
     const result = await usersModel.find()
     //2 -add the todo items from the todos array 
-    const newArr = result.todos.filter((todoItem) =>
-        todoItem.name != req.body.x
-    )
+    const newArr = result.todos.filter((todoItem) => {
+        return todoItem.name != req.body.x
+    })
     //3 - update the user's todos array in the database
     const updateResult = await usersModel.update(
         { username: req.session.loggedUsername }, //selection object
