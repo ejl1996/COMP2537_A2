@@ -1,28 +1,21 @@
 <%- include('templates/header.ejs') %>
-    <div>Users:
-        <% if (isAdmin) { %>
-            <h2> Only admins can view this. </h2>
-            <% } %>
-                <ul>
-                    <% todos.forEach(function(todoItem){ %>
-                        <li>
-                            <ul>
-                                <li>
-                                    <%= todoItem.name %>
-                                </li>
-                                <li>
-                                    <%= todoItem.done %>
-                                </li>
-                        </li>
-                </ul>
-                </li>
-                <% }); %>
-                    </ul>
+    Admin Page
 
-                    <form action="/addNewToDoItem" method="POST">
-                        <label for="x">Add next item</label>
-                        <input id="x" type="text" name="x">
-                        <input type="submit" value="Add">
-                    </form>
-    </div>
+    <body>
+        <h5>User List:</h5>
+        <% let i=0 %>
+            <ol>
+                <% for(i=0; i < listOfUsers.length; i++) { %>
+                    <li>
+                        <a href="/user/<%= listOfUsers[i].user_id %>">
+                            <%= listOfUsers[i].username %>
+                        </a>
+                    </li>
+                    <% } %>
+            </ol>
+            </form>
+            <form action='/logout' method='get'>
+                <button>Sign out!</button>
+            </form>
+    </body>
     <%- include('templates/footer.ejs') %>

@@ -7,7 +7,7 @@ const usersModel = require('./models/w2users');
 const MongoStore = require('connect-mongo');
 const bcrypt = require('bcrypt');
 const saltRounds = 12;
-
+console.log(usersModel)
 const port = process.env.PORT || 4000;
 
 const app = express();
@@ -31,6 +31,8 @@ const node_session_secret = process.env.NODE_SESSION_SECRET;
 var { database } = include('databaseConnection');
 
 const userCollection = database.db(mongodb_database).collection('users');
+
+app.set('view engine', 'ejs');
 
 //req.body need this 
 app.use(express.urlencoded({ extended: false }));
@@ -302,7 +304,7 @@ app.post('/loggingin', async (req, res) => {
     }
 
     const result = await userCollection.find({ username: username }).project({ username: 1, password: 1, _id: 1 }).toArray();
-
+    console.log("hello")
     console.log(result);
     if (result.length != 1) {
         res.render("usernotfound.ejs");
@@ -367,9 +369,31 @@ app.post('/addNewTodoItem', async (req, res) => {
 //});
 
 app.get('/admin', async (req, res) => {
-    const result = await usersModel.find()
-    res.render("admin.ejs")
+    const result = await userCollection.find({}).project().toArray();
+    //const result = await usersModel.find({})
+    //res.send(result)
+    res.render('admin', { title: "Admin Page", listOfUsers: result })
+    //const result = await usersModel.findOne({}, function (err, data) {
+    // if (err) {
+    // console.log("Error " + err);
+    // res.status(500);
+    // } else {
+    // console.log("Data " + data);
+    // res.send(data);
+    //}
+    //})
+    //})
+    //console.log("/admin")
+    //console.log(result)
+    //res.render("admin.ejs", { listOfUsers: result })
 });
+
+//app.get('/admin', isAdmin, async (req, res) => {
+//     var userNameDisplay = req.session.user;
+//     var userResultSet = await db_users.getUsersForAdmin();
+//     res.render('admin', { title: "Admin Page", listOfUsers: userResultSet, nameOfUser: userNameDisplay })
+// })
+//})
 
 app.use(express.static(__dirname + "/public"));
 

@@ -1,22 +1,26 @@
 const mongoose = require('mongoose');
 const usersSchema = new mongoose.Schema({
-    "username": {
+    username: {
         type: String,
         unique: true,
     },
-    "password": String,
-    "type": String,
-    "todos": [
-        {
-            "name": String,
-            "done": {
-                type: Boolean,
-                default: false
-            }
-        }
-    ]
+    password: {
+        type: String,
+    },
+    email: {
+        type: String,
+    }
+    // "todos": [
+    //     // {
+    //         // "name": String,
+    //         // "done": {
+    //             // type: Boolean,
+    //             default: false
+    //         }
+    //     }
+    // ]
 });
 
-const usersModel = mongoose.model('w2users', usersSchema);
+const usersModel = mongoose.model('users', usersSchema);
 
 module.exports = usersModel;
