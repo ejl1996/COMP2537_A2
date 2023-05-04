@@ -344,10 +344,10 @@ app.get('/logoutuser', (req, res) => {
     //res.send(html);
 });
 
-app.post('/deleteTodoItem', async (req, res) => {
+app.post('/addNewTodoItem', async (req, res) => {
     //1 - find the user in the database
     const result = await usersModel.find()
-    //2 -delete the todo items from the todos array 
+    //2 -add the todo items from the todos array 
     const newArr = result.todos.filter((todoItem) =>
         todoItem.name != req.body.x
     )
@@ -367,7 +367,7 @@ app.post('/deleteTodoItem', async (req, res) => {
 //});
 
 app.get('/admin', (req, res) => {
-    //const result = await usersModel.find()
+    const result = await usersModel.find()
     res.render("admin.ejs")
 });
 

@@ -1,8 +1,25 @@
 <%- include('templates/header.ejs') %>
-    <div>Users:</div>
-    <ul>
-        <% for(let i=0; i < users.length; i++) { %>
-            <%- include('templates/user', {user: users[i]}) %>
-                <% } %>
-    </ul>
+    <div>Users:
+        <ul>
+            <% todos.forEach(function(todoItem){ %>
+                <li>
+                    <ul>
+                        <li>
+                            <%= todoItem.name %>
+                        </li>
+                        <li>
+                            <%= todoItem.done %>
+                        </li>
+                </li>
+        </ul>
+        </li>
+        <% }); %>
+            </ul>
+
+            <form action="/addNewToDoItem" method="POST">
+                <label for="x">Add next item</label>
+                <input id="x" type="text" name="x">
+                <input type="submit" value="Add">
+            </form>
+    </div>
     <%- include('templates/footer.ejs') %>
