@@ -1,25 +1,28 @@
 <%- include('templates/header.ejs') %>
     <div>Users:
-        <ul>
-            <% todos.forEach(function(todoItem){ %>
-                <li>
-                    <ul>
+        <% if (isAdmin) { %>
+            <h2> Only admins can view this. </h2>
+            <% } %>
+                <ul>
+                    <% todos.forEach(function(todoItem){ %>
                         <li>
-                            <%= todoItem.name %>
+                            <ul>
+                                <li>
+                                    <%= todoItem.name %>
+                                </li>
+                                <li>
+                                    <%= todoItem.done %>
+                                </li>
                         </li>
-                        <li>
-                            <%= todoItem.done %>
-                        </li>
+                </ul>
                 </li>
-        </ul>
-        </li>
-        <% }); %>
-            </ul>
+                <% }); %>
+                    </ul>
 
-            <form action="/addNewToDoItem" method="POST">
-                <label for="x">Add next item</label>
-                <input id="x" type="text" name="x">
-                <input type="submit" value="Add">
-            </form>
+                    <form action="/addNewToDoItem" method="POST">
+                        <label for="x">Add next item</label>
+                        <input id="x" type="text" name="x">
+                        <input type="submit" value="Add">
+                    </form>
     </div>
     <%- include('templates/footer.ejs') %>

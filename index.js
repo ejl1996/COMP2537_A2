@@ -352,7 +352,7 @@ app.post('/addNewTodoItem', async (req, res) => {
         todoItem.name != req.body.x
     )
     //3 - update the user's todos array in the database
-    const updateResult = await usersModel.updateOne(
+    const updateResult = await usersModel.update(
         { username: req.session.loggedUsername }, //selection object
         { $set: { todos: newArr } } //update object
     )
