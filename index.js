@@ -366,7 +366,7 @@ app.post('/addNewTodoItem', async (req, res) => {
 //res.render("admin.ejs", { users: result });
 //});
 
-app.get('/admin', (req, res) => {
+app.get('/admin', async (req, res) => {
     const result = await usersModel.find()
     res.render("admin.ejs")
 });
