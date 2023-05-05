@@ -36,10 +36,10 @@ app.set('view engine', 'ejs');
 
 const navLinks = [
     { name: "Home", link: "/" },
-    { name: "Cats", link: "/cats" },
+    { name: "Cats", link: "/members" },
     { name: "Login", link: "/login" },
     { name: "Admin", link: "/admin" },
-    { name: "404", link: "/dne" },
+    { name: "404", link: "*" },
 ]
 
 //req.body need this 
