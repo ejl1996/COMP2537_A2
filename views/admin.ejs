@@ -9,6 +9,10 @@
                     <li>
                         <a href="/user/<%= listOfUsers[i].user_id %>">
                             <%= listOfUsers[i].username %>
+                                <%= listOfUsers[i].user_type %>
+                                    <% if (! listOfUsers[i].user_type) { %>
+                                        user
+                                        <% } %>
                         </a>
                     </li>
                     <% } %>
