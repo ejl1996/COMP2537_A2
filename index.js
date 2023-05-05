@@ -34,6 +34,14 @@ const userCollection = database.db(mongodb_database).collection('users');
 
 app.set('view engine', 'ejs');
 
+const navLinks = [
+    { name: "Home", link: "/" },
+    { name: "Cats", link: "/cats" },
+    { name: "Login", link: "/login" },
+    { name: "Admin", link: "/admin" },
+    { name: "404", link: "/dne" },
+]
+
 //req.body need this 
 app.use(express.urlencoded({ extended: false }));
 
@@ -91,8 +99,8 @@ function adminAuthorization(req, res, next) {
 }
 
 app.get('/', (req, res) => {
-    res.render("home.ejs")
-})
+    res.render("home.ejs", { navLinks: navLinks });
+});
 
 app.get('/cats', (req, res) => {
     res.render("cats.ejs");
