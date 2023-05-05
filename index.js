@@ -374,7 +374,7 @@ app.get('/admin', async (req, res) => {
     //res.send(result)
     res.render('admin', { title: "Admin Page", listOfUsers: result })
     //const result = await usersModel.findOne({}, function (err, data) {
-    // if (err) {
+    // if (err) 
     // console.log("Error " + err);
     // res.status(500);
     // } else {
