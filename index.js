@@ -1,5 +1,7 @@
 require("./utils.js");
 
+const url = require('url');
+
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
@@ -33,14 +35,6 @@ var { database } = include('databaseConnection');
 const userCollection = database.db(mongodb_database).collection('users');
 
 app.set('view engine', 'ejs');
-
-const navLinks = [
-    { name: "Home", link: "/" },
-    { name: "Cats", link: "/members" },
-    { name: "Login", link: "/login" },
-    { name: "Admin", link: "/admin" },
-    { name: "404", link: "*" },
-]
 
 //req.body need this 
 app.use(express.urlencoded({ extended: false }));
@@ -98,8 +92,24 @@ function adminAuthorization(req, res, next) {
     }
 }
 
+const navLinks = [
+    { name: "Home", link: "/" },
+    { name: "Cats", link: "/cats" },
+    { name: "Login", link: "/login" },
+    { name: "Admin", link: "/admin" },
+    { name: "404", link: "/dne" },
+]
+
+app.use("/", (req, res, next) => {
+    app.locals.navLinks = navLinks;
+    app.locals.currentURL = url.parse(req.url).pathname;
+    next();
+});
+
 app.get('/', (req, res) => {
-    res.render("home.ejs", { navLinks: navLinks });
+    console.log(req.url);
+    console.log(url.parse(req.url));
+    res.render("home.ejs");
 });
 
 app.get('/cats', (req, res) => {
