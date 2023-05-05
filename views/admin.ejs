@@ -8,11 +8,15 @@
                 <% for(i=0; i < listOfUsers.length; i++) { %>
                     <li>
                         <a href="/user/<%= listOfUsers[i].user_id %>">
-                            <%= listOfUsers[i].username %>
-                                <%= listOfUsers[i].user_type %>
+                            <p>username:
+                                <%= listOfUsers[i].username %>
+                            </p>
+                            <p>
+                                user type: <%= listOfUsers[i].user_type %>
                                     <% if (! listOfUsers[i].user_type) { %>
                                         user
                                         <% } %>
+                            </p>
                         </a>
                     </li>
                     <% } %>
