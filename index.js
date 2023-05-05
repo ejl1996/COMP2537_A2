@@ -388,9 +388,6 @@ app.post('/addNewTodoItem', async (req, res) => {
 
 app.get('/admin', async (req, res) => {
     const result = await userCollection.find({}).project().toArray();
-    console.log(result)
-    //const result = await usersModel.find({})
-    //res.send(result)
     res.render('admin', { title: "Admin Page", listOfUsers: result })
     //const result = await usersModel.findOne({}, function (err, data) {
     // if (err) 
