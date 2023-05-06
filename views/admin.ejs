@@ -12,7 +12,9 @@
                                 <%= listOfUsers[i].username %>
                             </p>
                             <p>
-                                user type: <%= listOfUsers[i].user_type %>
+                                user type: <%= listOfUsers[i].user_type %> <a href="/login"
+                                        class="btn btn-success">Promote to Admin</a>
+                                    <a href="/createuser" class="btn btn-warning">Demote to User</a>
                                     <% if (! listOfUsers[i].user_type) { %>
                                         user
                                         <% } %>
