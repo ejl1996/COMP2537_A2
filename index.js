@@ -352,14 +352,17 @@ app.post('/loggingin', async (req, res) => {
     }
 });
 
-//this middleware protects members page and sub-routes of this one
-app.use('/members', sessionValidation);
-app.get('/members', (req, res) => {
-    res.render("hello.ejs");
+//this middleware protects login page and sub-routes of this one
+app.use('/loggedin', sessionValidation);
+app.get('/loggedin', (req, res) => {
+    if (!req.session.authenticated) {
+        res.redirect('/login');
+    }
+    res.render("loggedin.ejs");
 });
 
-app.get('/members/info', (req, res) => {
-    res.render("members-info");
+app.get('/loggedin/info', (req, res) => {
+    res.render("loggedin-info");
 });
 
 app.get('/logoutuser', (req, res) => {
