@@ -326,30 +326,68 @@ app.post('/loggingin', async (req, res) => {
         return;
     }
 
-    const result = await userCollection.find({ username: username }).project({ username: 1, password: 1, _id: 1 }).toArray();
+    //const result = await userCollection.find({ username: username }).project({ username: 1, password: 1, _id: 1 }).toArray();
+    const arrListOfUsers = await userCollection.find({}).project().toArray();
     console.log("hello")
-    console.log(result);
-    if (result.length != 1) {
-        res.render("usernotfound.ejs");
-        //console.log("user not found");
-        //res.redirect("/login");
-        return;
+    console.log(arrListOfUsers);
+    var currentUser;
+    for (i = 0; i < arrListOfUsers.length; i++) {
+        console.info(arrListOfUsers[i].username);
+        console.log(arrListOfUsers[i].user_type);
+        if (arrListOfUsers[i].username == username) {
+            currentUser = arrListOfUsers[i];
+        }
     }
-    else if (await bcrypt.compare(password, result[0].password)) {
-        console.log("correct password");
-        req.session.authenticated = true;
-        req.session.username = username;
-        req.session.cookie.maxAge = expireTime;
 
-        res.redirect('/members');
-        return;
+    for (i = 0; i < arrListOfUsers.length; i++) {
+        const isPasswordValid = bcrypt.compareSync(password, currentUser.password)
+        if (currentUser.username == username) {
+            if (isPasswordValid) {
+                req.session.authenticated = true;
+                req.session.username = currentUser.username;
+                req.session.user_type = currentUser.user_type;
+                //req.session.email = email;
+                req.session.cookie.maxAge = expireTime;
+                if (req.session.user_type == 'admin') {
+                    res.redirect('/admin');
+                    return;
+                } else {
+                    res.redirect('/members');
+                    return;
+                }
+            }
+            else if (!isPasswordValid) {
+                req.session.authenticated = false;
+                res.redirect('/login');
+                return;
+            }
+        }
     }
-    else {
-        res.render();
-        //console.log("incorrect password");
-        //res.redirect("/login");
-        return;
-    }
+
+    // if (result.length != 1) {
+    //     res.render("usernotfound.ejs");
+    //     //console.log("user not found");
+    //     //res.redirect("/login");
+    //     return;
+    // }
+    // if (await bcrypt.compare(password, arrListOfUsers[0].password)) {
+    //     console.log("correct password");
+    //     req.session.authenticated = true;
+    //     req.session.username = username;
+    //     req.session.user_type = currentUser.user_type;
+    //     console.log("check user type")
+    //     console.log(req.session.user_type)
+    //     req.session.cookie.maxAge = expireTime;
+
+    //     res.redirect('/members');
+    //     return;
+    // }
+    // else {
+    //     //res.render();
+    //     //console.log("incorrect password");
+    //     res.redirect("/login");
+    //     return;
+    // }
 });
 
 //this middleware protects login page and sub-routes of this one
@@ -398,7 +436,7 @@ app.post('/addNewTodoItem', async (req, res) => {
 
 //admin: validates sesion, if session is valid - authorize admin, if admin - next function  
 //app.use('/admin');
-app.get('/admin', sessionValidation, async (req, res) => {
+app.get('/admin', sessionValidation, adminAuthorization, async (req, res) => {
     const result = await userCollection.find({}).project().toArray();
     res.render('admin.ejs', { title: "Admin Page", listOfUsers: result })
     //const result = await usersModel.findOne({}, function (err, data) {
