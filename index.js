@@ -57,18 +57,6 @@ app.use(session({
 }
 ));
 
-res.render('protectedRoute.ejs', {
-    "x": req.session.loggedUsername,
-    "y": imageName,
-    "isAdmin": req.session.loggedType == "admin",
-    "todos": [
-        { name: "todo1", done: false },
-        { name: "todo2", done: true },
-        { name: "todo3", done: false }
-    ]
-}
-)
-
 //AUTHENTICATION
 function isValidSession(req) {
     if (req.session.authenticated) {
@@ -410,7 +398,7 @@ app.post('/addNewTodoItem', async (req, res) => {
 
 //admin: validates sesion, if session is valid - authorize admin, if admin - next function  
 //app.use('/admin');
-app.get('/admin', sessionValidation, async (req, res) => {
+app.get('/admin', sessionValidation, adminAuthorization, async (req, res) => {
     const result = await userCollection.find({}).project().toArray();
     res.render('admin', { title: "Admin Page", listOfUsers: result })
     //const result = await usersModel.findOne({}, function (err, data) {
@@ -435,22 +423,12 @@ app.get('/admin', sessionValidation, async (req, res) => {
 // })
 //})
 
-app.get('/promote', sessionValidation, async (req, res) => {
-    const result = await userCollection.find({}).project().toArray();
-    res.render('admin', { title: "Admin Page", listOfUsers: result })
+app.use(express.static(__dirname + "/public"));
+
+app.get("*", (req, res) => {
+    res.status(404).render("404.ejs");
 });
 
-app.get('/demote', sessionValidation, async (req, res) => {
-    const result = await userCollection.find({}).project().toArray();
-    res.render('admin', { title: "Admin Page", listOfUsers: result })
-
-    app.use(express.static(__dirname + "/public"));
-
-    app.get("*", (req, res) => {
-        res.status(404).render("404.ejs");
-    });
-
-    app.listen(port, () => {
-        console.log("Node application listening on port " + port);
-    });
+app.listen(port, () => {
+    console.log("Node application listening on port " + port);
 });
