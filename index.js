@@ -398,9 +398,9 @@ app.post('/addNewTodoItem', async (req, res) => {
 
 //admin: validates sesion, if session is valid - authorize admin, if admin - next function  
 //app.use('/admin');
-app.get('/admin', sessionValidation, adminAuthorization, async (req, res) => {
+app.get('/admin', sessionValidation, async (req, res) => {
     const result = await userCollection.find({}).project().toArray();
-    res.render('admin', { title: "Admin Page", listOfUsers: result })
+    res.render('admin.ejs', { title: "Admin Page", listOfUsers: result })
     //const result = await usersModel.findOne({}, function (err, data) {
     // if (err) 
     // console.log("Error " + err);
