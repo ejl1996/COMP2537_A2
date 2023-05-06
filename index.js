@@ -420,8 +420,8 @@ app.post('/addNewTodoItem', async (req, res) => {
         return todoItem.name != req.body.x
     })
     //3 - update the user's todos array sin the database
-    const updateResult = await usersModel.update(
-        { username: req.session.loggedUsername }, //selection object
+    const updateResult = await userCollection.updateOne(
+        { username: req.session.username }, //selection object
         { $set: { todos: newArr } } //update object
     )
     //4 - redirect to the protected route
@@ -438,7 +438,45 @@ app.post('/addNewTodoItem', async (req, res) => {
 //app.use('/admin');
 app.get('/admin', sessionValidation, adminAuthorization, async (req, res) => {
     const result = await userCollection.find({}).project().toArray();
-    res.render('admin.ejs', { title: "Admin Page", listOfUsers: result })
+    res.render('admin.ejs', { title: "Admin Page", listOfUsers: result, promote: promote, demote: demote })
+    async function promote(req, res, next) {
+        console.log("promote user")
+        const arrListOfUsers = await userCollection.find({}).project().toArray();
+        var changeTypeForUser;
+        for (i = 0; i < arrListOfUsers.length; i++) {
+            console.info(arrListOfUsers[i].username);
+            if (arrListOfUsers[i].username == username) {
+                changeTypeForUser = arrListOfUsers[i];
+            }
+        }
+
+        if (changeTypeForUser.user_type == "user") {
+            const updateResult = await userCollection.UpdateOne(
+                { username: changeTypeForUser }, // selection object
+                { $set: { user_type: "admin" } }
+            )
+        }
+    }
+
+    // this function would be used for admins to be demoted. 
+    async function demote(req, res, next) {
+        console.log("demote user")
+        const arrListOfUsers = await userCollection.find({}).project().toArray();
+        var changeTypeForUser;
+        for (i = 0; i < arrListOfUsers.length; i++) {
+            console.info(arrListOfUsers[i].username);
+            if (arrListOfUsers[i].username == username) {
+                changeTypeForUser = arrListOfUsers[i];
+            }
+        }
+
+        if (changeTypeForUser.user_type == "admin") {
+            const updateResult = await userCollection.UpdateOne(
+                { username: changeTypeForUser }, // selection object
+                { $set: { user_type: "user" } }
+            )
+        };
+    }
     //const result = await usersModel.findOne({}, function (err, data) {
     // if (err) 
     // console.log("Error " + err);
@@ -460,6 +498,9 @@ app.get('/admin', sessionValidation, adminAuthorization, async (req, res) => {
 //     res.render('admin', { title: "Admin Page", listOfUsers: userResultSet, nameOfUser: userNameDisplay })
 // })
 //})
+
+// this function would be used for users to be promoted. 
+
 
 app.use(express.static(__dirname + "/public"));
 

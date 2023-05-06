@@ -16,8 +16,8 @@
                                     <% if (! listOfUsers[i].user_type) { %>
                                         user
                                         <% } %>
-                                            <a href="/promote" class="btn btn-success">Promote to Admin</a>
-                                            <a href="/demote" class="btn btn-warning">Demote to User</a>
+                                            <button onclick="promote()">Promote</button>
+                                            <button onclick="demote()">Demote</button>
                             </p>
                         </a>
                     </li>
