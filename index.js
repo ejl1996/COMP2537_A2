@@ -36,7 +36,7 @@ const userCollection = database.db(mongodb_database).collection('users');
 
 app.set('view engine', 'ejs');
 
-//req.body need this 
+//req.body need this to parse (app.post) ex. req.body.username
 app.use(express.urlencoded({ extended: false }));
 
 // initially was /session, now /test in mongoURL
@@ -48,6 +48,7 @@ var mongoStore = MongoStore.create({
     }
 })
 
+//handles cookies. Ex. req.session.cookies. **would have to parse cookies ourselves otherwise.  
 app.use(session({
     secret: node_session_secret,
     store: mongoStore, //default is memory store 
@@ -56,17 +57,21 @@ app.use(session({
 }
 ));
 
+//AUTHENTICATION
 function isValidSession(req) {
-    if (req.sesion.authenticated) {
+    if (req.session.authenticated) {
         return true;
     }
     return false;
 }
 
+//session validation
 function sessionValidation(req, res, next) {
+    //if valid session call next action
     if (isValidSession(req)) {
         next();
     }
+    //otherwise don't render and redirect to login
     else {
         res.redirect('/login');
     }
@@ -74,7 +79,7 @@ function sessionValidation(req, res, next) {
 
 function isAdmin(req) {
     //return req.session.user_type = "admin";
-    if (req.session.user_type == 'admin') {
+    if (req.session.user_type == "admin") {
         return true;
     }
     return false;
@@ -347,12 +352,14 @@ app.post('/loggingin', async (req, res) => {
     }
 });
 
-app.use('/loggedin', sessionValidation);
-app.get('/loggedin', (req, res) => {
-    if (!req.session.authenticated) {
-        res.redirect('/login');
-    }
-    res.render("loggedin.ejs")
+//this middleware protects members page and sub-routes of this one
+app.use('/members', sessionValidation);
+app.get('/members', (req, res) => {
+    res.render("hello.ejs");
+});
+
+app.get('/members/info', (req, res) => {
+    res.render("members-info");
 });
 
 app.get('/logoutuser', (req, res) => {
@@ -386,7 +393,9 @@ app.post('/addNewTodoItem', async (req, res) => {
 //res.render("admin.ejs", { users: result });
 //});
 
-app.get('/admin', async (req, res) => {
+//admin: validates sesion, if session is valid - authorize admin, if admin - next function  
+//app.use('/admin');
+app.get('/admin', sessionValidation, adminAuthorization, async (req, res) => {
     const result = await userCollection.find({}).project().toArray();
     res.render('admin', { title: "Admin Page", listOfUsers: result })
     //const result = await usersModel.findOne({}, function (err, data) {

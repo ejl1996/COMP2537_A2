@@ -4,7 +4,7 @@
     <body>
         <h5>User List:</h5>
         <% let i=0 %>
-            <ol>
+            <ul>
                 <% for(i=0; i < listOfUsers.length; i++) { %>
                     <li>
                         <a href="/user/<%= listOfUsers[i].user_id %>">
@@ -20,7 +20,7 @@
                         </a>
                     </li>
                     <% } %>
-            </ol>
+            </ul>
             </form>
             <form action='/logout' method='get'>
                 <button>Sign out!</button>
