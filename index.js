@@ -221,8 +221,8 @@ app.get('/members', authenticatedOnly, (req, res) => {
         `
     if (!authenticated) {
         res.redirect('/');
-        //return
     }
+
     if (randomNum == 1) {
         res.render("hello.ejs", {
             x: nameOfUser,
@@ -231,7 +231,6 @@ app.get('/members', authenticatedOnly, (req, res) => {
             c: "/cat3.jpg"
 
         })
-        //res.send(html + "<img src='/fluffy.gif' style='width:250px;'>" + "<br>" + html1 + "<br>" + members);
     }
 
     else if (randomNum == 2) {
@@ -241,8 +240,8 @@ app.get('/members', authenticatedOnly, (req, res) => {
             b: "/socks.gif",
             c: "/cat3.jpg"
         })
-        //res.send(html + "<img src='/socks.gif' style='width:250px;'>" + "<br>" + html1 + "<br>" + members);
     }
+
     else if (randomNum == 3) {
         res.render("hello.ejs", {
             x: nameOfUser,
@@ -385,7 +384,6 @@ app.get('/admin/demote/:id', async (req, res) => {
     await userCollection.updateOne({ _id: new ObjectId(id) }, { $set: { user_type: "user" } });
     res.redirect('/admin');
 });
-
 
 app.use(express.static(__dirname + "/public"));
 
