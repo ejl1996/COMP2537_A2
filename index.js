@@ -440,6 +440,7 @@ app.get('/admin', sessionValidation, adminAuthorization, async (req, res) => {
     const result = await userCollection.find({}).project().toArray();
     res.render('admin.ejs', { title: "Admin Page", listOfUsers: result, promote: promote, demote: demote })
     async function promote(req, res, next) {
+        //form tag --> trigger a route //app.post
         console.log("promote user")
         const arrListOfUsers = await userCollection.find({}).project().toArray();
         var changeTypeForUser;
