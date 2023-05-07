@@ -7,21 +7,19 @@
             <ul>
                 <% for(i=0; i < listOfUsers.length; i++) { %>
                     <li>
-                        <a href="/user/<%= listOfUsers[i].user_id %>">
-                            <p>username:
-                                <%= listOfUsers[i].username %>
-                            </p>
-                            <p>
-                                user type: <%= listOfUsers[i].user_type %>
-                                    <% if (! listOfUsers[i].user_type) { %>
-                                        user
-                                        <% } %>
-                                            <button onclick="promote()">Promote</button>
-                                            <button onclick="demote()">Demote</button>
-                            </p>
-                        </a>
+                        <p>username:
+                            <%= listOfUsers[i].username %>
+                        </p>
+                        <p>
+                            user type: <%= listOfUsers[i].user_type %>
+                        </p>
+                        <a class="btn btn-danger rounded-pill px-3"
+                            href="/admin/promote/<%=listOfUsers[i]._id%>">Promote</a>
+                        <a class="btn btn-danger rounded-pill px-3"
+                            href="/admin/demote/<%=listOfUsers[i]._id%>">Demote</a>
                     </li>
                     <% } %>
+
             </ul>
             </form>
             <form action='/logout' method='get'>

@@ -5,6 +5,7 @@ const url = require('url');
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
+const ObjectId = require('mongodb').ObjectId;
 const usersModel = require('./models/w2users');
 const MongoStore = require('connect-mongo');
 const bcrypt = require('bcrypt');
@@ -249,20 +250,8 @@ app.get('/members', authenticatedOnly, (req, res) => {
             b: "/socks.gif",
             c: "/cat3.jpg"
         })
-        //res.send(html + "<img src='/cat3.jpg' style='width:250px;'>" + "<br>" + html1 + "<br>" + members);
     }
 });
-
-
-//app.get('/test', (req, res) => {
-//var x = 5;
-
-//if (x == 5) {
-//res.send("Hello");
-//return;
-//} 
-//res.send("bye");
-//});
 
 app.get('/login', (req, res) => {
     var invalidEmailAndPassword = req.query.invalidEmailAndPassword;
@@ -310,8 +299,6 @@ app.post('/submitUser', async (req, res) => {
         res.redirect("/members")
         return;
     }
-    // var html = "successfully created user";
-    // res.send(html);
 });
 
 app.post('/loggingin', async (req, res) => {
@@ -326,7 +313,6 @@ app.post('/loggingin', async (req, res) => {
         return;
     }
 
-    //const result = await userCollection.find({ username: username }).project({ username: 1, password: 1, _id: 1 }).toArray();
     const arrListOfUsers = await userCollection.find({}).project().toArray();
     console.log("hello")
     console.log(arrListOfUsers);
@@ -363,31 +349,6 @@ app.post('/loggingin', async (req, res) => {
             }
         }
     }
-
-    // if (result.length != 1) {
-    //     res.render("usernotfound.ejs");
-    //     //console.log("user not found");
-    //     //res.redirect("/login");
-    //     return;
-    // }
-    // if (await bcrypt.compare(password, arrListOfUsers[0].password)) {
-    //     console.log("correct password");
-    //     req.session.authenticated = true;
-    //     req.session.username = username;
-    //     req.session.user_type = currentUser.user_type;
-    //     console.log("check user type")
-    //     console.log(req.session.user_type)
-    //     req.session.cookie.maxAge = expireTime;
-
-    //     res.redirect('/members');
-    //     return;
-    // }
-    // else {
-    //     //res.render();
-    //     //console.log("incorrect password");
-    //     res.redirect("/login");
-    //     return;
-    // }
 });
 
 //this middleware protects login page and sub-routes of this one
@@ -406,10 +367,6 @@ app.get('/loggedin/info', (req, res) => {
 app.get('/logoutuser', (req, res) => {
     req.session.destroy();
     res.redirect('/');
-    //var html = `
-    //You are logged out.
-    //`;
-    //res.send(html);
 });
 
 app.post('/addNewTodoItem', async (req, res) => {
@@ -428,79 +385,22 @@ app.post('/addNewTodoItem', async (req, res) => {
     res.redirect('/protectedRoute');
 });
 
-//app.use('/admin');
-//app.get('/admin', sessionValidation, adminAuthorization, async (req, res) => {
-//const result = await userCollection.find().project({ username: 1, _id: 1 })
-//res.render("admin.ejs", { users: result });
-//});
-
-//admin: validates sesion, if session is valid - authorize admin, if admin - next function  
-//app.use('/admin');
 app.get('/admin', sessionValidation, adminAuthorization, async (req, res) => {
     const result = await userCollection.find({}).project().toArray();
-    res.render('admin.ejs', { title: "Admin Page", listOfUsers: result, promote: promote, demote: demote })
-    async function promote(req, res, next) {
-        //form tag --> trigger a route //app.post
-        console.log("promote user")
-        const arrListOfUsers = await userCollection.find({}).project().toArray();
-        var changeTypeForUser;
-        for (i = 0; i < arrListOfUsers.length; i++) {
-            console.info(arrListOfUsers[i].username);
-            if (arrListOfUsers[i].username == username) {
-                changeTypeForUser = arrListOfUsers[i];
-            }
-        }
-
-        if (changeTypeForUser.user_type == "user") {
-            const updateResult = await userCollection.UpdateOne(
-                { username: changeTypeForUser }, // selection object
-                { $set: { user_type: "admin" } }
-            )
-        }
-    }
-
-    // this function would be used for admins to be demoted. 
-    async function demote(req, res, next) {
-        console.log("demote user")
-        const arrListOfUsers = await userCollection.find({}).project().toArray();
-        var changeTypeForUser;
-        for (i = 0; i < arrListOfUsers.length; i++) {
-            console.info(arrListOfUsers[i].username);
-            if (arrListOfUsers[i].username == username) {
-                changeTypeForUser = arrListOfUsers[i];
-            }
-        }
-
-        if (changeTypeForUser.user_type == "admin") {
-            const updateResult = await userCollection.UpdateOne(
-                { username: changeTypeForUser }, // selection object
-                { $set: { user_type: "user" } }
-            )
-        };
-    }
-    //const result = await usersModel.findOne({}, function (err, data) {
-    // if (err) 
-    // console.log("Error " + err);
-    // res.status(500);
-    // } else {
-    // console.log("Data " + data);
-    // res.send(data);
-    //}
-    //})
-    //})
-    //console.log("/admin")
-    //console.log(result)
-    //res.render("admin.ejs", { listOfUsers: result })
+    res.render('admin.ejs', { title: "Admin Page", listOfUsers: result, })
 });
 
-//app.get('/admin', isAdmin, async (req, res) => {
-//     var userNameDisplay = req.session.user;
-//     var userResultSet = await db_users.getUsersForAdmin();
-//     res.render('admin', { title: "Admin Page", listOfUsers: userResultSet, nameOfUser: userNameDisplay })
-// })
-//})
+app.get('/admin/promote/:id', async (req, res) => {
+    const id = req.params.id;
+    await userCollection.updateOne({ _id: new ObjectId(id) }, { $set: { user_type: "admin" } });
+    res.redirect('/admin');
+});
 
-// this function would be used for users to be promoted. 
+app.get('/admin/demote/:id', async (req, res) => {
+    const id = req.params.id;
+    await userCollection.updateOne({ _id: new ObjectId(id) }, { $set: { user_type: "user" } });
+    res.redirect('/admin');
+});
 
 
 app.use(express.static(__dirname + "/public"));
